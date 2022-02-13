@@ -1,5 +1,12 @@
 package mymath
 
+
+type Float float64
+
+func (f Float) Square() Float {
+	return f * f
+}
+
 func dummy(x int) int {
 	return x
 }
