@@ -1,0 +1,10 @@
+{
+  "config_file": "confileFromJSONFile.txt",
+  "count": 1999,
+  "strings": ["one", "two", "three", "four", "five"],
+  "maps": {
+    "one": 1,
+    "two": 2,
+    "three": 2
+  }
+}
