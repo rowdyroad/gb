@@ -6,6 +6,7 @@ import (
 	"github.com/Chekunin/wraperr"
 	"log"
 	"runtime/debug"
+	"time"
 )
 
 var (
@@ -16,6 +17,7 @@ var (
 	ErrCalculation = errors.New("calculation")
 	ErrHTTP = errors.New("http")
 )
+
 
 
 type MyError struct {
@@ -78,48 +80,73 @@ func test() (x int, err error) {
 }
 
 
+func panicFunc2() {
+
+	defer func() {
+		if err  := recover(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+
+	go func() {
+
+		defer func() {
+			if err  := recover(); err != nil {
+				fmt.Println(err)
+			}
+		}()
+
+		panic("oops")
+	}()
+
+
+	time.Sleep(time.Second)
+}
+
 
 func main() {
-	var a,b float64
-	fmt.Scan(&a,&b)
-	res, err := calc(a,b)
 
-
-	if errors.Is(err, ErrCalculation) {
-		log.Println("error calculation", err)
-	}
-
-	if errors.Is(err, ErrDivideByZero) {
-		log.Println("divide by zero!", err)
-	}
-
-	switch err  {
-	case ErrNumberTooBig:
-		log.Println("Correct your the second number")
-	case ErrDivideByZero:
-		log.Println("Correct your the second number")
-	case nil:
-		log.Println("Result:",res)
-	}
-	defer fmt.Println("hello")
-	for i := 0; i < 10; i++ {
-		defer fmt.Printf("i:%d\n",i)
-	}
-	defer fmt.Println("bye")
-
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println("Oops:", err)
-		}
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println("oops2:",err)
-			panic(err)
-		}
-	}()
-	panicFunc()
-
-	test()
+	panicFunc2()
+	//var a,b float64
+	//fmt.Scan(&a,&b)
+	//res, err := calc(a,b)
+	//
+	//
+	//if errors.Is(err, ErrCalculation) {
+	//	log.Println("error calculation", err)
+	//}
+	//
+	//if errors.Is(err, ErrDivideByZero) {
+	//	log.Println("divide by zero!", err)
+	//}
+	//
+	//switch err  {
+	//case ErrNumberTooBig:
+	//	log.Println("Correct your the second number")
+	//case ErrDivideByZero:
+	//	log.Println("Correct your the second number")
+	//case nil:
+	//	log.Println("Result:",res)
+	//}
+	//defer fmt.Println("hello")
+	//for i := 0; i < 10; i++ {
+	//	defer fmt.Printf("i:%d\n",i)
+	//}
+	//defer fmt.Println("bye")
+	//
+	//defer func() {
+	//	if err := recover(); err != nil {
+	//		log.Println("Oops:", err)
+	//	}
+	//}()
+	//
+	//defer func() {
+	//	if err := recover(); err != nil {
+	//		log.Println("oops2:",err)
+	//		panic(err)
+	//	}
+	//}()
+	//panicFunc()
+	//
+	//test()
 }
